@@ -7,6 +7,6 @@ For a description of the instructions of project 1, see the instructor repositor
 *02/07/2021: Project 2 files coming soon!*
 
 ---
-Feel free to check out my personal blog at [jedraynes.com](https://www.jedraynes.com). There, you can find ways to contact me via a contact form, or, over [LinkedIn](https://www.linkedin.com/in/jedraynes/).
+Feel free to check out my personal blog at [jedraynes.com](https://www.jedraynes.com). There, you can find ways to contact me via a contact form or over [LinkedIn](https://www.linkedin.com/in/jedraynes/).
 
 jedraynes
