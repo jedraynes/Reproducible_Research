@@ -211,15 +211,33 @@ df$CROPDMGEXP <- toupper(df$CROPDMGEXP)
 
 # transform the dataset be the actual dollar value rather than a subtotaled one
 df_economic_impact <- df %>%
-  mutate(multiplier_prop = ifelse(PROPDMGEXP == "K", 1000,
-                                  ifelse(PROPDMGEXP == "M", 1000000,
-                                         if_else(PROPDMGEXP == "B", 1000000000, 0)))) %>%
-  mutate(multiplier_crop = ifelse(PROPDMGEXP == "K", 1000,
-                                  ifelse(PROPDMGEXP == "M", 1000000,
-                                         if_else(PROPDMGEXP == "B", 1000000000, 0)))) %>%
-  mutate(Property_Damage_USD = PROPDMG * multiplier_prop) %>%
-  mutate(Crop_Damage_USD = CROPDMG * multiplier_crop)
+  mutate(multiplier_prop = ifelse(PROPDMGEXP == "K", 3,
+                                  ifelse(PROPDMGEXP == "M", 6,
+                                         ifelse(PROPDMGEXP == "B", 9, 
+                                                ifelse(PROPDMGEXP == "H", 2, 
+                                                       ifelse(suppressWarnings(!is.na(as.numeric(PROPDMGEXP))), as.numeric(PROPDMGEXP), 0)))))) %>%
+  mutate(multiplier_crop = ifelse(CROPDMGEXP == "K", 3,
+                                  ifelse(CROPDMGEXP == "M", 6,
+                                         ifelse(CROPDMGEXP == "B", 9, 
+                                                ifelse(CROPDMGEXP == "H", 2, 
+                                                       ifelse(suppressWarnings(!is.na(as.numeric(CROPDMGEXP))), as.numeric(CROPDMGEXP), 0)))))) %>%
+  mutate(Property_Damage_USD = PROPDMG * 10 ** multiplier_prop) %>%
+  mutate(Crop_Damage_USD = CROPDMG * 10 ** multiplier_crop)
+```
 
+```
+## Warning: Problem with `mutate()` input `multiplier_prop`.
+## i NAs introduced by coercion
+## i Input `multiplier_prop` is `ifelse(...)`.
+```
+
+```
+## Warning: Problem with `mutate()` input `multiplier_crop`.
+## i NAs introduced by coercion
+## i Input `multiplier_crop` is `ifelse(...)`.
+```
+
+```r
 # select only the necessary column
 df_economic_impact <- df_economic_impact[, c("EVTYPE", "Property_Damage_USD", "Crop_Damage_USD")]
 
@@ -250,6 +268,6 @@ ggplot(df_economic_impact[1:10,], aes(x = Economic_Impact/1000000, y = reorder(E
 ### # Results
 ***
 
-After inspecting the resulting plots, it's clear that **tornadoes** cause the most damage to the population as measured by total fatalities and injuries whereas **hurricanes** cause the most economic damage as measured by the economic impact of property and crop damage. Natural disasters take a toll on our way of life, and it's evident that it spans beyond simple damage. Mitigating steps should be made to reduce both the resulting damage to the population and economy as well as improving the environmental conditions globally to prevent, in whatever way we can, these events.
+After inspecting the resulting plots, it's clear that **tornadoes** cause the most damage to the population as measured by total fatalities and injuries whereas **floods** cause the most economic damage as measured by the economic impact of property and crop damage. Natural disasters take a toll on our way of life, and it's evident that it spans beyond simple damage. Mitigating steps should be made to reduce both the resulting damage to the population and economy as well as improving the environmental conditions globally to prevent, in whatever way we can, these events.
 
 
